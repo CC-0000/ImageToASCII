@@ -1,4 +1,3 @@
-# ImageToASCII
 <html>
   <h1>
     Image To ASCII
