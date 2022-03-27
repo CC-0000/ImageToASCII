@@ -1,5 +1,4 @@
 #include <string>
-#include <ios>
 #include <iostream>
 #include "lodepng.h"
 using namespace std;
