@@ -6,14 +6,6 @@ Image::Image()
 	height = -1;
 	pixels = nullptr;
 }
-Image::Image(string address)
-{
-	width = -1;
-	height = -1;
-	pixels = nullptr;
-
-	LoadImage(address);
-}
 Image::~Image()
 {
 	if (pixels != nullptr)
@@ -24,49 +16,39 @@ Image::~Image()
 	}
 }
 
-void Image::LoadImage(string address)
+void Image::LoadPNGImage(int w, int h, vector<unsigned char> pix)
 {
-	ifstream file(address, ios_base::binary);
-	if (file.is_open())
+	width = w;
+	height = h;
+
+	//Creates 2d Pixel pointer array
+	//Acces by pixels[x-coord][y-coord]
+	for (int i = 0; i < width; i++)
+		pixels[i] = new Pixel[height];
+	
+	//Load Pixels in backwards from vector so removal from pix array is const time
+	for (int x = width - 1; x >= 0; x--)
 	{
-		char uselessInfo[12];
-		file.read(uselessInfo, 12);
-		file.read((char*)&width, 2);
-		file.read((char*)&height, 2);
-		file.read(uselessInfo, 2);
-
-		if (pixels != nullptr)
+		for (int y = width - 1; y >= 0; y--)
 		{
-			for (int i = 0; i < width; i++)
-				delete[] pixels[i];
-			delete[] pixels;
+			//Ignore alpha channel
+			pix.pop_back();
+
+			unsigned char b = pix.back();
+			pix.pop_back();
+
+			unsigned char g = pix.back();
+			pix.pop_back();
+
+			unsigned char r = pix.back();
+			pix.pop_back();
+
+			pixels[x][y] = Pixel(r, g, b);
 		}
-
-		pixels = new Pixel * [width];
-		for (int i = 0; i < width; i++)
-			pixels[i] = new Pixel[height];
-
-		for (int x = 0; x < width; x++)
-		{
-			for (int y = 0; y < height; y++)
-			{
-				unsigned char r = 0;
-				unsigned char g = 0;
-				unsigned char b = 0;
-
-				file.read((char*)&b, 1);
-				file.read((char*)&g, 1);
-				file.read((char*)&r, 1);
-
-				pixels[x][y] = Pixel(r, g, b);
-			}
-		}
-	}
-	else
-	{
-		cout << "Image " << address << " not found!" << endl;
 	}
 }
+
+//Saves image to tga format for testing
 void Image::SaveImage(string address)
 {
 	ofstream file(address, ios_base::binary);

@@ -1,5 +1,4 @@
-#include <string>
-#include <iostream>
+#include "Image.h"
 #include "lodepng.h"
 using namespace std;
 
@@ -9,7 +8,7 @@ int main()
 		the decode() function is given a filename and returns the:
 			- height
 			- width
-			- image pixel values
+			- color values
 			- an optional error code
 
 		.png image files are decoded into a RGBA format, where:
@@ -26,10 +25,10 @@ int main()
 
 		an extra boolean variable is used to capture the return code of the decode function which can be used to determine if the function failed or not
 	*/
-	vector<unsigned char> image;
-	char* filename = "images/testPicture.PNG";
+	vector<unsigned char> colors;
+	string filename = "images/testPicture.PNG";
 	unsigned int width, height;
-	bool error = lodepng::decode(image, width, height, filename);
+	bool error = lodepng::decode(colors, width, height, filename);
 
 	if(error)
 	{
@@ -37,14 +36,14 @@ int main()
 	}
 	else
 	{
-		/*
-			CONTINUE YOUR CODE HERE
-			e.g. insert function for processing the data
-		*/
+		Image image;
+		image.LoadPNGImage(width, height, colors);
+		image.SaveImage("images/TestOutputPicture.tga");
 
+		/*  CAUSED AN ERROR FOR ME
 		// re-encode the image to a PNG <- I'm not sure if we need to do this yet, but it's better to have the code already there. 
 		filename = "images/newTestPicture.PNG";
-		error = lodepng::encode(filename, image, width, height);
+		error = lodepng::encode(filename, image, width, height); //ERROR WAS HERE. SAID ENCODE WAS NOT RECOGNISED
 		if(error)
 		{
 			cout << "image file could not be encoded" << endl;
@@ -53,5 +52,6 @@ int main()
 		{
 			// don't do anythin yet
 		}
+		*/
 	}
 }
