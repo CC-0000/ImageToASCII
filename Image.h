@@ -1,4 +1,3 @@
-#pragma once
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -9,16 +8,19 @@ using namespace std;
 class Image
 {
 public:
-	Image();
+	Image(short w = -1, short h = -1);
 	~Image();
 
-	void LoadPNGImage(int w, int h, vector<unsigned char> colors);
-
+	void LoadPNGImage(int w, int h, vector<unsigned char>& colors);
 	void SaveImage(string address);
+
+	Image& OutlineImage();
 
 	Pixel** pixels;
 
 private:
+	static int abs(int i);
+
 	short width;
 	short height;
 };

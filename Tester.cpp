@@ -1,5 +1,5 @@
-#include "Image.h"
-#include "lodepng.h"
+#include "Image.cpp"
+#include "lodepng.cpp"
 using namespace std;
 
 int main()
@@ -36,9 +36,12 @@ int main()
 	}
 	else
 	{
-		Image image;
-		image.LoadPNGImage(width, height, colors);
-		image.SaveImage("images/TestOutputPicture.tga");
+		Image org;
+		org.LoadPNGImage(width, height, colors);
+		org.SaveImage("images/org.tga");
+		Image outline = org.OutlineImage();
+		outline.SaveImage("images/Outline.tga");
+		cout << "Done";
 
 		/*  CAUSED AN ERROR FOR ME
 		// re-encode the image to a PNG <- I'm not sure if we need to do this yet, but it's better to have the code already there. 

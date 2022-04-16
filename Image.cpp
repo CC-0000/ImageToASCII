@@ -1,10 +1,15 @@
 #include "Image.h"
 
-Image::Image()
+Image::Image(short w, short h)
 {
-	width = -1;
-	height = -1;
-	pixels = nullptr;
+	width = w;
+	height = h;
+	if (w > 0 && h > 0)
+		for (int i = 0; i < width; i++)
+			pixels[i] = new Pixel[height];
+	else
+		pixels = nullptr;
+
 }
 Image::~Image()
 {
@@ -16,7 +21,8 @@ Image::~Image()
 	}
 }
 
-void Image::LoadPNGImage(int w, int h, vector<unsigned char> pix)
+//Loads image from PNG type
+void Image::LoadPNGImage(int w, int h, vector<unsigned char>& pix)
 {
 	width = w;
 	height = h;
@@ -47,11 +53,19 @@ void Image::LoadPNGImage(int w, int h, vector<unsigned char> pix)
 		}
 	}
 }
-
 //Saves image to tga format for testing
 void Image::SaveImage(string address)
 {
-	ofstream file(address, ios_base::binary);
+	ofstream file(address);
+	if (!file.is_open())
+	{
+		cout << "Can't open file: " << address << endl;
+		return;
+	}
+	else
+	{
+		cout << "Writing file: " << address << endl;
+	}
 
 	char header[12];
 	for (int i = 0; i < 12; i++)
@@ -78,4 +92,50 @@ void Image::SaveImage(string address)
 			}
 		}
 	}
+
+	file.close();
+}
+
+Image& Image::OutlineImage()
+{
+	static Image outline(width, height);
+
+	//Cycle through orininal image x
+	for (short orgx = 0; orgx < width; orgx++)
+	{
+		//Cycle through orininal image y
+		for (short orgy = 0; orgy < height; orgy++)
+		{
+			int diff = 0;
+			int neighbors = 0;
+			for (short hor = -1; hor <= 1; hor++)
+			{
+				for (short ver = -1; ver <= 1; ver++)
+				{
+					short x = orgx + hor;
+					short y = orgy + ver;
+					//Check if the pixel is a valid pixel
+					if (x >= 0 && y >= 0 && x < width && y < height && (x != orgx || y != orgy))
+					{
+						diff += abs((int)(pixels[x][y].r - pixels[orgx][orgy].r));
+						diff += abs((int)(pixels[x][y].g - pixels[orgx][orgy].g));
+						diff += abs((int)(pixels[x][y].b - pixels[orgx][orgy].b));
+						neighbors++;
+					}
+				}
+			}
+			unsigned char average = diff / 3 / neighbors;
+			outline.pixels[orgx][orgy] = Pixel(average, average, average);
+		}
+	}
+
+	return outline;
+}
+
+int Image::abs(int i)
+{
+	if (i > 0)
+		return i;
+	else
+		return -i;
 }
