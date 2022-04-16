@@ -26,7 +26,7 @@ int main()
 		an extra boolean variable is used to capture the return code of the decode function which can be used to determine if the function failed or not
 	*/
 	vector<unsigned char> colors;
-	string filename = "images/testPicture.PNG";
+	string filename = "images/testImage2.PNG";
 	unsigned int width, height;
 	bool error = lodepng::decode(colors, width, height, filename);
 
@@ -37,11 +37,13 @@ int main()
 	else
 	{
 		Image org;
+		cout << "Loading image" << endl;
 		org.LoadPNGImage(width, height, colors);
-		org.SaveImage("images/org.tga");
+		cout << "Saving image" << endl;
+		org.SaveImage("images/outTest2.tga");
+		cout << "outline image" << endl;
 		Image outline = org.OutlineImage();
-		outline.SaveImage("images/Outline.tga");
-		cout << "Done";
+		outline.SaveImage("images/outOutline2.tga");
 
 		/*  CAUSED AN ERROR FOR ME
 		// re-encode the image to a PNG <- I'm not sure if we need to do this yet, but it's better to have the code already there. 
