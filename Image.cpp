@@ -5,8 +5,11 @@ Image::Image(short w, short h)
 	width = w;
 	height = h;
 	if (w > 0 && h > 0)
+	{
+		pixels = new Pixel*[width];
 		for (int i = 0; i < width; i++)
 			pixels[i] = new Pixel[height];
+	}
 	else
 		pixels = nullptr;
 
@@ -28,28 +31,23 @@ void Image::LoadPNGImage(int w, int h, vector<unsigned char>& pix)
 	height = h;
 
 	//Creates 2d Pixel pointer array
-	//Acces by pixels[x-coord][y-coord]
-	for (int i = 0; i < width; i++)
+	//Access by pixels[x-coord][y-coord]
+	pixels = new Pixel*[width];
+	for (short i = 0; i < width; i++)
 		pixels[i] = new Pixel[height];
-	
+
 	//Load Pixels in backwards from vector so removal from pix array is const time
-	for (int x = width - 1; x >= 0; x--)
+	int color = 0;
+	for (short x = width - 1; x >= 0; x--)
 	{
-		for (int y = width - 1; y >= 0; y--)
+		for (short y = 0; y < height; y++)
 		{
-			//Ignore alpha channel
-			pix.pop_back();
-
-			unsigned char b = pix.back();
-			pix.pop_back();
-
-			unsigned char g = pix.back();
-			pix.pop_back();
-
-			unsigned char r = pix.back();
-			pix.pop_back();
-
-			pixels[x][y] = Pixel(r, g, b);
+			pixels[x][y].r = pix[color];
+			color++;
+			pixels[x][y].g = pix[color];
+			color++;
+			pixels[x][y].b = pix[color];
+			color += 2;
 		}
 	}
 }
