@@ -87,24 +87,69 @@ void Algorithm2::Run(string address)
     }
 
     int textSizeX = 50;
-    int textSizeY = 50;
+    int textSizeY = textSizeX * height / width / 2;
     for (int textX = 0; textX < textSizeX; textX++)
     {
         for (int textY = 0; textY < textSizeY; textY++)
         {
-            char c = ' ';
+            //Line of Best Fit (Least Square Method)
+
+            //Calculate averages
+            int points = 0;
+            int meanX = 0;
+            int meanY = 0;
             for (int blockX = 0; blockX < width / textSizeX; blockX++)
             {
                 for (int blockY = 0; blockY < height / textSizeY; blockY++)
                 {
                     int x = width / textSizeX * textX + blockX;
                     int y = height / textSizeY * textY + blockY;
+
                     if (outline[x][y])
                     {
-                        c = '#';
+                        meanX += blockX;
+                        meanY += blockY;
+                        points++;
                     }
                 }
             }
+            meanX /= points;
+            meanY /= points;
+
+            //Calculate slope
+            int top = 0;
+            int bottom = 0;
+            for (int blockX = 0; blockX < width / textSizeX; blockX++)
+            {
+                for (int blockY = 0; blockY < height / textSizeY; blockY++)
+                {
+                    int x = width / textSizeX * textX + blockX;
+                    int y = height / textSizeY * textY + blockY;
+
+                    if (outline[x][y])
+                    {
+                        top += (blockX - meanX) * (blockY - meanY);
+                        bottom += (blockX - meanX) * (blockX - meanY);
+                    }
+                }
+            }
+            double slope;
+            if (bottom != 0)
+                slope = (double)top / (double)bottom;
+            else
+                slope = 100;
+
+            //Slope to char
+            char c = '#';
+            if (slope > 1 && slope < 5)
+                c = '/';
+            else if (slope >= 5 || slope <= -5)
+                c = '|';
+            else if (slope < -1 && slope > -5)
+                c = '\\';
+            else
+                c = '-';
+            
             file << c;
         }
         file << endl;
