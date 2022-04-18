@@ -26,9 +26,10 @@ Pixel::Pixel(unsigned char r, unsigned char g, unsigned char b)
 	this->b = b;
 }
 
+/*
 // Density: @&#$50327b1o~;,.
 // Will be dealt with in algorithm.h
-float Pixel::DarknessOfImage()
+float Pixel::DarknessOfImage() 
 {
 	// Convert to float for grayscale
 	float grayR = (float)r * 0.21;
@@ -40,3 +41,4 @@ float Pixel::DarknessOfImage()
 
 	return darkness;
 }
+*/
