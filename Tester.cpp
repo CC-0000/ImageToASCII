@@ -1,4 +1,4 @@
-#include "Image.cpp"
+#include "Algorithms.cpp"
 #include "lodepng.cpp"
 using namespace std;
 
@@ -36,14 +36,12 @@ int main()
 	}
 	else
 	{
-		Image org;
+		Image source;
 		cout << "Loading image" << endl;
-		org.LoadPNGImage(width, height, colors);
-		cout << "Saving image" << endl;
-		org.SaveImage("images/outTest2.tga");
-		cout << "outline image" << endl;
-		Image outline = org.OutlineImage();
-		outline.SaveImage("images/outOutline2.tga");
+		source.LoadPNGImage(width, height, colors);
+		Algorithm2 a2(source);
+		a2.Run("text/algorthim2test2.txt");
+
 
 		/*  CAUSED AN ERROR FOR ME
 		// re-encode the image to a PNG <- I'm not sure if we need to do this yet, but it's better to have the code already there. 

@@ -1,11 +1,10 @@
 class Pixel
 {
-private:
+public:
 	unsigned char r;
 	unsigned char g;
 	unsigned char b;
 
-public:
 	Pixel();
 	Pixel(unsigned char r, unsigned char g, unsigned char b);
 	float DarknessOfImage();
@@ -29,7 +28,8 @@ Pixel::Pixel(unsigned char r, unsigned char g, unsigned char b)
 
 // Density: @&#$50327b1o~;,.
 // Will be dealt with in algorithm.h
-float Pixel::DarknessOfImage() {
+float Pixel::DarknessOfImage()
+{
 	// Convert to float for grayscale
 	float grayR = (float)r * 0.21;
 	float grayG = (float)g * 0.72;

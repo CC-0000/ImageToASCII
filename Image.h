@@ -18,9 +18,9 @@ public:
 
 	Pixel** pixels;
 
-private:
-	static int abs(int i);
-
 	short width;
 	short height;
+
+private:
+	static int abs(int i);
 };
