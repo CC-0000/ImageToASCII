@@ -6,9 +6,7 @@
 Algorithm1::Algorithm1(const vector<Pixel>& _pixels)
 {
     for (unsigned int i = 0; i < _pixels.size(); i++)
-    {
         pixels.push_back(_pixels[i]);
-    }
 }
 
 // Density Character Finder
@@ -38,12 +36,26 @@ char Algorithm1::Density(float darkness)
 // Algorithm for assigning each pixel a darkness value
 void Algorithm1::PixelDarkness()
 {
+    /*
+    ofstream file("algorithm1test1.txt");
+    if (!file.is_open())
+    {
+        cout << "Invalid file" << address << endl;
+        return;
+    }
+    */
+
     for (int i = 0; i < pixels.size(); i++)
     {
-        Pixel thisPix = pixels[i];
-        float darkness = 0;
+        float darkness = pixels[i].DarknessOfImage();
         pixelChars.push_back(Density(darkness));
     }
+
+    // Not sure where in the code we are able to write the txt files to test algorithm.
+    /*for (int i = 0; i < pixelChars.size(); i++)
+    {
+        file.write(pixelChars[i]);
+    }*/
 }
 
 

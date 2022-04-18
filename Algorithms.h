@@ -1,10 +1,18 @@
 #include "Image.cpp"
 
 //Luke's Algorithm
-class Algorithm1;
+class Algorithm1
+{
+private:
+    vector<Pixel> pixels;
+    vector<char> pixelChars;
+    const string density = "@&#$50327b1o~;,.";
 
-
-
+public:
+    Algorithm1(const vector<Pixel>& pixels);
+    char Density(float darkness);
+    void PixelDarkness();
+};
 
 
 //Nathan's Algorithm
