@@ -14,7 +14,7 @@ Image::Image(short w, short h)
 		pixels = nullptr;
 
 }
-Image::~Image()
+void Image::DeleteImage()
 {
 	if (pixels != nullptr)
 	{
@@ -23,7 +23,10 @@ Image::~Image()
 		delete[] pixels;
 	}
 }
-
+Image::~Image()
+{
+	DeleteImage();
+}
 //Loads image from PNG type
 void Image::LoadPNGImage(int w, int h, vector<unsigned char>& pix)
 {
@@ -38,16 +41,26 @@ void Image::LoadPNGImage(int w, int h, vector<unsigned char>& pix)
 
 	//Load Pixels in backwards from vector so removal from pix array is const time
 	int color = 0;
-	for (short x = width - 1; x >= 0; x--)
+
+	for (short y = 0; y < height; y++)
 	{
-		for (short y = 0; y < height; y++)
+		for (short x = 0; x < width; x++)
 		{
 			pixels[x][y].r = pix[color];
 			color++;
 			pixels[x][y].g = pix[color];
 			color++;
 			pixels[x][y].b = pix[color];
-			color += 2;
+			color++;
+
+			//Shade transparent black
+			if (pix[color] == 0)
+			{
+				pixels[x][y].r = 0;
+				pixels[x][y].g = 0;
+				pixels[x][y].b = 0;
+			}
+			color++;
 		}
 	}
 }
