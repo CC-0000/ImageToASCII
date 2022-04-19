@@ -3,59 +3,63 @@
 //Luke's stuff
 
 // Constructor with vector parameter
-Algorithm1::Algorithm1(const vector<Pixel>& _pixels)
+Algorithm1::Algorithm1(Image& _image)
 {
-    for (unsigned int i = 0; i < _pixels.size(); i++)
-        pixels.push_back(_pixels[i]);
+    image = _image;
+    pixels = image.pixels;
+    width = image.width;
+    height = image.height;
 }
 
-// Density Character Finder
+// Density to Character
 char Algorithm1::Density(float darkness)
 {
-    char densityChar = ' ';
-    if (darkness > 239) densityChar = density[0];
-    else if (darkness > 223) densityChar = density[1];
-    else if (darkness > 207) densityChar = density[2];
-    else if (darkness > 191) densityChar = density[3];
-    else if (darkness > 175) densityChar = density[4];
-    else if (darkness > 159) densityChar = density[5];
-    else if (darkness > 143) densityChar = density[6];
-    else if (darkness > 127) densityChar = density[7];
-    else if (darkness > 111) densityChar = density[8];
-    else if (darkness > 95) densityChar = density[9];
-    else if (darkness > 79) densityChar = density[10];
-    else if (darkness > 63) densityChar = density[11];
-    else if (darkness > 47) densityChar = density[12];
-    else if (darkness > 31) densityChar = density[13];
-    else if (darkness > 15) densityChar = density[14];
-    else if (darkness > 0) densityChar = density[15];
+    char c = ' ';
+    if (darkness > 239) c = density[0];
+    else if (darkness > 223) c = density[1];
+    else if (darkness > 207) c = density[2];
+    else if (darkness > 191) c = density[3];
+    else if (darkness > 175) c = density[4];
+    else if (darkness > 159) c = density[5];
+    else if (darkness > 143) c = density[6];
+    else if (darkness > 127) c = density[7];
+    else if (darkness > 111) c = density[8];
+    else if (darkness > 95) c = density[9];
+    else if (darkness > 79) c = density[10];
+    else if (darkness > 63) c = density[11];
+    else if (darkness > 47) c = density[12];
+    else if (darkness > 31) c = density[13];
+    else if (darkness > 15) c = density[14];
+    else if (darkness > 0) c = density[15];
 
-    return densityChar;
+    return c;
 }
 
 // Algorithm for assigning each pixel a darkness value
-void Algorithm1::PixelDarkness()
+void Algorithm1::Run(string address)
 {
-    /*
-    ofstream file("algorithm1test1.txt");
+    
+    ofstream file(address);
     if (!file.is_open())
     {
         cout << "Invalid file" << address << endl;
         return;
     }
-    */
+    
+    //int textSizeX = 50;
+    //int textSizeY = textSizeX * height / width / 2;
 
-    for (int i = 0; i < pixels.size(); i++)
+    for (int i = 0; i < width; i++)
     {
-        float darkness = pixels[i].DarknessOfImage();
-        pixelChars.push_back(Density(darkness));
+        for (int j = 0; j < height; j++)
+        {
+            float darkness = pixels[i][j].DarknessOfImage();
+            file << Density(darkness);
+        }
+        file << '\n';
     }
-
-    // Not sure where in the code we are able to write the txt files to test algorithm.
-    /*for (int i = 0; i < pixelChars.size(); i++)
-    {
-        file.write(pixelChars[i]);
-    }*/
+    image.SaveImage("images/output.tga");
+    file.close();
 }
 
 
@@ -152,7 +156,7 @@ void Algorithm2::Run(string address)
             
             file << c;
         }
-        file << endl;
+        file << '\n';
     }
 
     file.close();

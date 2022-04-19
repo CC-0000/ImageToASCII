@@ -3,15 +3,18 @@
 //Luke's Algorithm
 class Algorithm1
 {
+public:
+    Algorithm1(Image& image);
+    char Density(float darkness);
+    void Run(string address);
+
 private:
-    vector<Pixel> pixels;
-    vector<char> pixelChars;
+    Pixel** pixels;
+    Image image;
     const string density = "@&#$50327b1o~;,.";
 
-public:
-    Algorithm1(const vector<Pixel>& pixels);
-    char Density(float darkness);
-    void PixelDarkness();
+    short width;
+    short height;
 };
 
 

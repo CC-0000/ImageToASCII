@@ -36,6 +36,10 @@ float Pixel::DarknessOfImage()
 	float grayG = (float)g * 0.72;
 	float grayB = (float)b * 0.07;
 
+	r = grayR + grayG + grayB;
+	g = grayR + grayG + grayB;
+	b = grayR + grayG + grayB;
+
 	// Calculate how dark each pixel is
 	float darkness = grayR + grayG + grayB;
 
