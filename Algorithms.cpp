@@ -45,20 +45,23 @@ void Algorithm1::Run(string address)
         cout << "Invalid file" << address << endl;
         return;
     }
-    
-    //int textSizeX = 50;
-    //int textSizeY = textSizeX * height / width / 2;
+   
+    int heightIncrement = (height / 100) * 2;
+    int widthIncrement = (width / 100);
 
-    for (int i = 0; i < width; i++)
+    if (heightIncrement == 0) heightIncrement = 2;
+    if (widthIncrement == 0) widthIncrement = 1;
+
+    for (int i = 0; i < height; i = i + heightIncrement)
     {
-        for (int j = 0; j < height; j++)
+        for (int j = 0; j < width; j = j + widthIncrement)
         {
-            float darkness = pixels[i][j].DarknessOfImage();
+            float darkness = pixels[j][i].DarknessOfImage();
             file << Density(darkness);
         }
         file << '\n';
     }
-    image.SaveImage("images/output.tga");
+    
     file.close();
 }
 

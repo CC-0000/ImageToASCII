@@ -25,7 +25,7 @@ int main()
 		an extra boolean variable is used to capture the return code of the decode function which can be used to determine if the function failed or not
 	*/
 	vector<unsigned char> colors;
-	string filename = "images/testImage2.PNG";
+	string filename = "images/newTestPicture.PNG";
 	unsigned int width, height;
 	bool error = lodepng::decode(colors, width, height, filename);
 
@@ -36,7 +36,7 @@ int main()
 	else
 	{
 		//Nathan Test cases
-		/*
+		
 		/*Nathan Test cases
 
 		Image source;
@@ -46,14 +46,14 @@ int main()
 		*/
 
 
-		/*Luke Test cases*/
+		/*Luke Test cases
 
 		Image source;
 		source.LoadPNGImage(width, height, colors);
 		Algorithm1 a1(source);
 		a1.Run("text/agorithm1test1.txt");
-
-
+		
+		*/
 
 		/*  CAUSED AN ERROR FOR ME
 		// re-encode the image to a PNG <- I'm not sure if we need to do this yet, but it's better to have the code already there.
