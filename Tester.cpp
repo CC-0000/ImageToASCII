@@ -35,24 +35,26 @@ int main()
 	}
 	else
 	{
+		//Nathan Test cases
+		/*
 		/*Nathan Test cases
-		
+
 		Image source;
 		source.LoadPNGImage(width, height, colors);
 		Algorithm2 a2(source);
 		a2.Run("text/algorthim2test2.txt");
 		*/
-		
+
 
 		/*Luke Test cases*/
-		
+
 		Image source;
 		source.LoadPNGImage(width, height, colors);
 		Algorithm1 a1(source);
 		a1.Run("text/agorithm1test1.txt");
-		
-		
-		
+
+
+
 		/*  CAUSED AN ERROR FOR ME
 		// re-encode the image to a PNG <- I'm not sure if we need to do this yet, but it's better to have the code already there.
 		filename = "images/newTestPicture.PNG";
