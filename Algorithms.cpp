@@ -84,7 +84,7 @@ Algorithm2::~Algorithm2()
 		delete[] outline;
 	}
 }
-void Algorithm2::Run(string address)
+void Algorithm2::Run(string address, int textSize)
 {
     ofstream file(address);
     if (!file.is_open())
@@ -93,7 +93,7 @@ void Algorithm2::Run(string address)
         return;
     }
 
-    int textSizeX = 50;
+    int textSizeX = textSize;
     int textSizeY = textSizeX * height / width / 2;
     for (int textX = 0; textX < textSizeX; textX++)
     {
@@ -103,14 +103,14 @@ void Algorithm2::Run(string address)
 
             //Calculate averages
             int points = 0;
-            int meanX = 0;
-            int meanY = 0;
+            double meanX = 0;
+            double meanY = 0;
             for (int blockX = 0; blockX < width / textSizeX; blockX++)
             {
                 for (int blockY = 0; blockY < height / textSizeY; blockY++)
                 {
-                    int x = width / textSizeX * textX + blockX;
-                    int y = height / textSizeY * textY + blockY;
+                    int x = width * textX / textSizeX + blockX;
+                    int y = height * textY / textSizeY + blockY;
 
                     if (outline[x][y])
                     {
@@ -120,18 +120,28 @@ void Algorithm2::Run(string address)
                     }
                 }
             }
+            if (points == 0)
+            {
+                file << ' ';
+                continue;
+            }
+            if (points == 1)
+            {
+                file << '_';
+                continue;
+            }
             meanX /= points;
             meanY /= points;
 
             //Calculate slope
-            int top = 0;
-            int bottom = 0;
+            double top = 0;
+            double bottom = 0;
             for (int blockX = 0; blockX < width / textSizeX; blockX++)
             {
                 for (int blockY = 0; blockY < height / textSizeY; blockY++)
                 {
-                    int x = width / textSizeX * textX + blockX;
-                    int y = height / textSizeY * textY + blockY;
+                    int x = width * textX / textSizeX + blockX;
+                    int y = height * textY / textSizeY + blockY;
 
                     if (outline[x][y])
                     {
@@ -142,20 +152,20 @@ void Algorithm2::Run(string address)
             }
             double slope;
             if (bottom != 0)
-                slope = (double)top / (double)bottom;
+                slope = -top / bottom;
             else
                 slope = 100;
 
             //Slope to char
             char c = '#';
-            if (slope > 1 && slope < 5)
+            if (slope > 0.3 && slope < 5)
                 c = '/';
             else if (slope >= 5 || slope <= -5)
                 c = '|';
-            else if (slope < -1 && slope > -5)
+            else if (slope < -0.3 && slope > -5)
                 c = '\\';
             else
-                c = '-';
+                c = '_';
             
             file << c;
         }
@@ -172,12 +182,11 @@ void Algorithm2::PureOutline(Image& image)
     
     unsigned char threshold = 1;
     for (int x = 0; x < width; x++)
-    {
         for (int y = 0; y < height; y++)
-        {
             outline[x][y] = image.pixels[x][y].r > threshold;
-            cout << (image.pixels[x][y].r / 3 + 33);
-        }
-        cout << endl;
-    }
+
+    for (int y = 0; y < height - 1; y++)
+        for (int x = 0; x < width - 1; x++)
+            if (outline[x][y] && outline[x+1][y] && outline[x][y+1])
+                outline[x][y] = false;
 }

@@ -12,7 +12,6 @@ public:
 	~Image();
 
 	void LoadPNGImage(int w, int h, vector<unsigned char>& colors);
-	void SaveImage(string address);
 
 	Image& OutlineImage();
 
