@@ -41,7 +41,7 @@ void Image::LoadPNGImage(int w, int h, vector<unsigned char>& pix)
 
 	for (short y = 0; y < height; y++)
 	{
-		for (short x = width - 1; x >= 0; x--)
+		for (short x = 0; x < width; x++)
 		{
 			pixels[x][y].r = pix[color];
 			color++;

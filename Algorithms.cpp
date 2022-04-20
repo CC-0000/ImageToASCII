@@ -183,7 +183,7 @@ void Algorithm2::PureOutline(Image& image)
 	for (short i = 0; i < width; i++)
 		outline[i] = new bool[height];
     
-    unsigned char threshold = 1;
+    unsigned char threshold = 10;
     for (int x = 0; x < width; x++)
         for (int y = 0; y < height; y++)
             outline[x][y] = image.pixels[x][y].r > threshold;
