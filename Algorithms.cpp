@@ -93,11 +93,11 @@ void Algorithm2::Run(string address)
         return;
     }
 
-    int textSizeX = 200;
+    int textSizeX = 50;
     int textSizeY = textSizeX * height / width / 2;
-    for (int textY = 0; textY < textSizeY; textY++)
+    for (int textX = 0; textX < textSizeX; textX++)
     {
-        for (int textX = 0; textX < textSizeX; textX++)
+        for (int textY = 0; textY < textSizeY; textY++)
         {
             //Line of Best Fit (Least Square Method)
 
@@ -109,21 +109,16 @@ void Algorithm2::Run(string address)
             {
                 for (int blockY = 0; blockY < height / textSizeY; blockY++)
                 {
-                    int x = (double)width / textSizeX * textX + blockX;
-                    int y = (double)height / textSizeY * textY + blockY;
+                    int x = width / textSizeX * textX + blockX;
+                    int y = height / textSizeY * textY + blockY;
 
-                    if (x < width && y < height && outline[x][y])
+                    if (outline[x][y])
                     {
                         meanX += blockX;
                         meanY += blockY;
                         points++;
                     }
                 }
-            }
-            if (points == 0)
-            {
-                file << ' ';
-                continue;
             }
             meanX /= points;
             meanY /= points;
@@ -135,10 +130,10 @@ void Algorithm2::Run(string address)
             {
                 for (int blockY = 0; blockY < height / textSizeY; blockY++)
                 {
-                    int x = (double)width / textSizeX * textX + blockX;
-                    int y = (double)height / textSizeY * textY + blockY;
+                    int x = width / textSizeX * textX + blockX;
+                    int y = height / textSizeY * textY + blockY;
 
-                    if (x < width && y < height && outline[x][y])
+                    if (outline[x][y])
                     {
                         top += (blockX - meanX) * (blockY - meanY);
                         bottom += (blockX - meanX) * (blockX - meanY);
@@ -175,14 +170,14 @@ void Algorithm2::PureOutline(Image& image)
 	for (short i = 0; i < width; i++)
 		outline[i] = new bool[height];
     
-    unsigned char threshold = 10;
-    for (int y = 0; y < height; y++)
+    unsigned char threshold = 1;
+    for (int x = 0; x < width; x++)
     {
-        for (int x = 0; x < width; x++)
+        for (int y = 0; y < height; y++)
         {
             outline[x][y] = image.pixels[x][y].r > threshold;
-            //cout << outline[x][y];
+            cout << (image.pixels[x][y].r / 3 + 33);
         }
-        //cout << endl;
+        cout << endl;
     }
 }

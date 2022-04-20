@@ -25,7 +25,7 @@ int main()
 		an extra boolean variable is used to capture the return code of the decode function which can be used to determine if the function failed or not
 	*/
 	vector<unsigned char> colors;
-	string filename = "images/newTestPicture.PNG";
+	string filename = "images/testImage2.PNG";
 	unsigned int width, height;
 	bool error = lodepng::decode(colors, width, height, filename);
 

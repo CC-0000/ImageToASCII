@@ -9,7 +9,6 @@ class Image
 {
 public:
 	Image(short w = -1, short h = -1);
-	void DeleteImage();
 	~Image();
 
 	void LoadPNGImage(int w, int h, vector<unsigned char>& colors);
