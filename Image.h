@@ -12,15 +12,14 @@ public:
 	~Image();
 
 	void LoadPNGImage(int w, int h, vector<unsigned char>& colors);
-	void SaveImage(string address);
 
 	Image& OutlineImage();
 
 	Pixel** pixels;
 
-private:
-	static int abs(int i);
-
 	short width;
 	short height;
+
+private:
+	static int abs(int i);
 };

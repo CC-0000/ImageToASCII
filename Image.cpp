@@ -18,7 +18,7 @@ Image::~Image()
 {
 	if (pixels != nullptr)
 	{
-		for (int i = 0; i < width; i++)
+		for (int i = 0; i < width; i++) 
 			delete[] pixels[i];
 		delete[] pixels;
 	}
@@ -47,51 +47,18 @@ void Image::LoadPNGImage(int w, int h, vector<unsigned char>& pix)
 			pixels[x][y].g = pix[color];
 			color++;
 			pixels[x][y].b = pix[color];
-			color += 2;
-		}
-	}
-}
-//Saves image to tga format for testing
-void Image::SaveImage(string address)
-{
-	ofstream file(address);
-	if (!file.is_open())
-	{
-		cout << "Can't open file: " << address << endl;
-		return;
-	}
-	else
-	{
-		cout << "Writing file: " << address << endl;
-	}
+			color++;
 
-	char header[12];
-	for (int i = 0; i < 12; i++)
-	{
-		header[i] = 0;
-	}
-	header[2] = 2;
-
-	file.write(header, 12);
-	file.write((char*)&width, 2);
-	file.write((char*)&height, 2);
-	header[0] = 24;
-	file.write(header, 2);
-
-	if (pixels != nullptr)
-	{
-		for (int x = 0; x < width; x++)
-		{
-			for (int y = 0; y < height; y++)
+			//Shade transparent black
+			if (pix[color] == 0)
 			{
-				file.write((char*)&pixels[x][y].b, 1);
-				file.write((char*)&pixels[x][y].g, 1);
-				file.write((char*)&pixels[x][y].r, 1);
+				pixels[x][y].r = 255;
+				pixels[x][y].g = 255;
+				pixels[x][y].b = 255;
 			}
+			color++;
 		}
 	}
-
-	file.close();
 }
 
 Image& Image::OutlineImage()
