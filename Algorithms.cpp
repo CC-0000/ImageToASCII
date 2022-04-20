@@ -22,7 +22,7 @@ char Algorithm1::Density(float darkness)
 }
 
 // Algorithm for assigning each pixel a darkness value
-void Algorithm1::Run(string address, int textSize)
+string Algorithm1::Run(string address, int textSize)
 {
     
     ofstream file(address);
@@ -86,7 +86,7 @@ Algorithm2::~Algorithm2()
 		delete[] outline;
 	}
 }
-void Algorithm2::Run(string address, int textSize)
+string Algorithm2::Run(string address, int textSize)
 {
     ofstream file(address);
     if (!file.is_open())
@@ -97,7 +97,7 @@ void Algorithm2::Run(string address, int textSize)
 
     int textSizeX = textSize;
     int textSizeY = textSizeX * height / width / 2;
-
+    string out;
     for (int textY = 0; textY < textSizeY; textY++)
     {
         for (int textX = 0; textX < textSizeX; textX++)
@@ -126,11 +126,13 @@ void Algorithm2::Run(string address, int textSize)
             if (points == 0)
             {
                 file << ' ';
+                out += ' ';
                 continue;
             }
             if (points == 1)
             {
                 file << '_';
+                out += '_';
                 continue;
             }
             meanX /= points;
@@ -171,8 +173,10 @@ void Algorithm2::Run(string address, int textSize)
                 c = '_';
             
             file << c;
+            out += c;
         }
         file << '\n';
+        out += '\n';
     }
 
     file.close();
