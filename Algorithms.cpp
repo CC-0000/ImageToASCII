@@ -2,41 +2,27 @@
 
 //Luke's stuff
 
-// Constructor with vector parameter
+// Constructor with image parameter
 Algorithm1::Algorithm1(Image& _image)
 {
     image = _image;
-    pixels = image.pixels;
-    width = image.width;
-    height = image.height;
+    pixels = _image.pixels;
+    width = _image.width;
+    height = _image.height;
 }
 
 // Density to Character
 char Algorithm1::Density(float darkness)
 {
     char c = ' ';
-    if (darkness > 239) c = density[0];
-    else if (darkness > 223) c = density[1];
-    else if (darkness > 207) c = density[2];
-    else if (darkness > 191) c = density[3];
-    else if (darkness > 175) c = density[4];
-    else if (darkness > 159) c = density[5];
-    else if (darkness > 143) c = density[6];
-    else if (darkness > 127) c = density[7];
-    else if (darkness > 111) c = density[8];
-    else if (darkness > 95) c = density[9];
-    else if (darkness > 79) c = density[10];
-    else if (darkness > 63) c = density[11];
-    else if (darkness > 47) c = density[12];
-    else if (darkness > 31) c = density[13];
-    else if (darkness > 15) c = density[14];
-    else if (darkness > 0) c = density[15];
+    int index = darkness * (density.size() - 1) / 255;
+    c = density[index];
 
     return c;
 }
 
 // Algorithm for assigning each pixel a darkness value
-void Algorithm1::Run(string address)
+void Algorithm1::Run(string address, int textSize)
 {
     
     ofstream file(address);
@@ -46,17 +32,33 @@ void Algorithm1::Run(string address)
         return;
     }
    
-    int heightIncrement = (height / 100) * 2;
-    int widthIncrement = (width / 100);
-
-    if (heightIncrement == 0) heightIncrement = 2;
-    if (widthIncrement == 0) widthIncrement = 1;
-
-    for (int i = 0; i < height; i = i + heightIncrement)
+    int textSizeX = textSize;
+    int textSizeY = textSizeX * height / width / 2;
+    for (int textY = 0; textY < textSizeY; textY++)
     {
-        for (int j = 0; j < width; j = j + widthIncrement)
+        for (int textX = 0; textX < textSizeX; textX++)
         {
-            float darkness = pixels[j][i].DarknessOfImage();
+            //Line of Best Fit (Least Square Method)
+
+            //Calculate averages
+            float darkness = 0;
+            int points = 0;
+            for (int blockX = 0; blockX < width / textSizeX; blockX++)
+            {
+                for (int blockY = 0; blockY < height / textSizeY; blockY++)
+                {
+                    int x = width * textX / textSizeX + blockX;
+                    int y = height * textY / textSizeY + blockY;
+                    if (x < width && y < height)
+                    {
+                        darkness = darkness + pixels[x][y].DarknessOfImage();
+                        points++;
+                    }
+                }
+            }
+
+            //char
+            darkness = darkness / points;
             file << Density(darkness);
         }
         file << '\n';
@@ -95,9 +97,10 @@ void Algorithm2::Run(string address, int textSize)
 
     int textSizeX = textSize;
     int textSizeY = textSizeX * height / width / 2;
-    for (int textX = 0; textX < textSizeX; textX++)
+
+    for (int textY = 0; textY < textSizeY; textY++)
     {
-        for (int textY = 0; textY < textSizeY; textY++)
+        for (int textX = 0; textX < textSizeX; textX++)
         {
             //Line of Best Fit (Least Square Method)
 
@@ -112,7 +115,7 @@ void Algorithm2::Run(string address, int textSize)
                     int x = width * textX / textSizeX + blockX;
                     int y = height * textY / textSizeY + blockY;
 
-                    if (outline[x][y])
+                    if (x < width && y < height && outline[x][y])
                     {
                         meanX += blockX;
                         meanY += blockY;
@@ -143,7 +146,7 @@ void Algorithm2::Run(string address, int textSize)
                     int x = width * textX / textSizeX + blockX;
                     int y = height * textY / textSizeY + blockY;
 
-                    if (outline[x][y])
+                    if (x < width && y < height && outline[x][y])
                     {
                         top += (blockX - meanX) * (blockY - meanY);
                         bottom += (blockX - meanX) * (blockX - meanY);

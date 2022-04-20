@@ -6,12 +6,12 @@ class Algorithm1
 public:
     Algorithm1(Image& image);
     char Density(float darkness);
-    void Run(string address);
+    void Run(string address, int textSize);
 
 private:
     Pixel** pixels;
     Image image;
-    const string density = "@&#$50327b1o~;,.";
+    const string density = "@$WX8?x;:~,.   ";//"@&#$50327b1o;~. ";
 
     short width;
     short height;

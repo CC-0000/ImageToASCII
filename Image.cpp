@@ -38,9 +38,10 @@ void Image::LoadPNGImage(int w, int h, vector<unsigned char>& pix)
 
 	//Load Pixels in backwards from vector so removal from pix array is const time
 	int color = 0;
-	for (short x = width - 1; x >= 0; x--)
+
+	for (short y = 0; y < height; y++)
 	{
-		for (short y = 0; y < height; y++)
+		for (short x = width - 1; x >= 0; x--)
 		{
 			pixels[x][y].r = pix[color];
 			color++;
